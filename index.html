@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorand Blockchain Explorer</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.0/dist/aframe-environment-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene id="env" environment="preset: egypt">
+      <a-entity position="-7 2 -3" rotation="0 40 0" id="latestTransactions">
+      </a-entity>
+      <a-text
+        value="Latest Transactions"
+        align="center"
+        color="#ffffff"
+        position="-7 5.2 -3"
+        rotation="0 40 0"
+      ></a-text>
+      <a-entity position="-7 1 -3" rotation="0 40 0" id="lastTransaction">
+        <a-box position="0 0 0" color="#fff" width="3" height="0.5"> </a-box>
+        <a-text
+          position="0 0 0.5"
+          color="red"
+          id="lastTransactionText"
+          width="3"
+          align="center"
+          height="0.5"
+          value="loading...."
+        >
+        </a-text
+      ></a-entity>
+
+      <!-- Logo/Image -->
+      <a-image
+        src="loadingLogo.jpg"
+        position="0 4 -4"
+        rotation="0 0 0"
+        scale="3 1 3"
+        alpha-test="0.1"
+      ></a-image>
+
+      <a-entity id="blockPanel" position="-3 2 -4">
+        <a-box
+          position="0 0 0"
+          depth="0.5"
+          height="1"
+          width="2"
+          color="#4CC3D9"
+        ></a-box>
+        <!-- Frame Simulation -->
+        <a-box
+          position="0 0.51 0"
+          depth="0.52"
+          height="0.02"
+          width="2.02"
+          color="#333"
+        ></a-box>
+        <!-- Top Edge -->
+        <a-box
+          position="0 -0.51 0"
+          depth="0.52"
+          height="0.02"
+          width="2.02"
+          color="#333"
+        ></a-box>
+        <!-- Bottom Edge -->
+        <a-box
+          position="1.01 0 0"
+          depth="0.52"
+          height="1.02"
+          width="0.02"
+          color="#333"
+        ></a-box>
+        <!-- Right Edge -->
+        <a-box
+          position="-1.01 0 0"
+          depth="0.52"
+          height="1.02"
+          width="0.02"
+          color="#333"
+        ></a-box>
+        <!-- Left Edge -->
+        <a-text
+          value="Latest Block"
+          align="center"
+          color="#ffffff"
+          position="0 0.8 0.26"
+        ></a-text>
+        <a-text
+          id="latestBlockText"
+          value="Loading..."
+          align="center"
+          color="#ffffff"
+          position="0 0 0.26"
+        ></a-text>
+      </a-entity>
+
+      <!-- Transaction Feed -->
+      <a-entity id="transactionFeed" position="0 2 -4">
+        <a-box
+          position="0 0 0"
+          depth="0.5"
+          height="1"
+          width="2"
+          color="#FFC65D"
+        ></a-box>
+        <!-- Frame Simulation -->
+        <a-box
+          position="0 0.51 0"
+          depth="0.52"
+          height="0.02"
+          width="2.02"
+          color="#333"
+        ></a-box>
+        <!-- Top Edge -->
+        <a-box
+          position="0 -0.51 0"
+          depth="0.52"
+          height="0.02"
+          width="2.02"
+          color="#333"
+        ></a-box>
+        <!-- Bottom Edge -->
+        <a-box
+          position="1.01 0 0"
+          depth="0.52"
+          height="1.02"
+          width="0.02"
+          color="#333"
+        ></a-box>
+        <!-- Right Edge -->
+        <a-box
+          position="-1.01 0 0"
+          depth="0.52"
+          height="1.02"
+          width="0.02"
+          color="#333"
+        ></a-box>
+        <!-- Left Edge -->
+        <a-text
+          value="Total Transactions"
+          align="center"
+          color="#ffffff"
+          position="0 0.8 0.26"
+        ></a-text>
+        <a-text
+          id="transactionTimeText"
+          value="Loading..."
+          align="center"
+          color="#ffffff"
+          position="0 0 0.26"
+        ></a-text>
+      </a-entity>
+
+      <a-video
+        src="4cd0339e7d3e4784ac6c6b523b9d1529.webm"
+        position="3 1.5 -4"
+        rotation="0 0 0"
+        width="4"
+        height="2.25"
+        autoplay
+        loop
+      ></a-video>
+
+      <!-- Algorand coin images with projectile animation -->
+      <!-- Define each coin with slightly different positions and delays -->
+      <!-- The 'to' positions should simulate the coins being thrown from left to right -->
+      <!-- Adjust the 'position' and 'to' values to create more variance if desired -->
+      <a-entity>
+        <a-image
+          src="AlgorandCoin.png"
+          position="2.55 1.25 -4"
+          scale="0.2 0.2 0.2"
+          animation__position="property: position; to: 3 2.5 -3.8; dur: 1490; easing: easeOutQuad; loop: true; delay: 500"
+          animation__scale="property: scale; to: 0 0 0; dur: 5000; easing: easeInQuad; loop: true; delay: 6000"
+        >
+        </a-image>
+        <!-- Duplicate the above coin with different delays and positions for randomness -->
+        <!-- You can adjust the 'position' and 'to' values further for more variety -->
+        <a-image
+          src="AlgorandCoin.png"
+          position="2.45 1.35 -4.1"
+          scale="0.2 0.2 0.2"
+          animation__position="property: position; to: 3.1 2.6 -3.7; dur: 1510; easing: easeOutQuad; loop: true; delay: 750"
+          animation__scale="property: scale; to: 0 0 0; dur: 5600; easing: easeInQuad; loop: true; delay: 6500"
+        >
+        </a-image>
+        <a-image
+          src="AlgorandCoin.png"
+          position="2.65 1.15 -3.9"
+          scale="0.2 0.2 0.2"
+          animation__position="property: position; to: 2.9 2.7 -3.9; dur: 1470; easing: easeOutQuad; loop: true; delay: 1000"
+          animation__scale="property: scale; to: 0 0 0; dur: 3000; easing: easeInQuad; loop: true; delay: 7000"
+        >
+        </a-image>
+        <a-image
+          src="AlgorandCoin.png"
+          position="2.35 1.45 -4.2"
+          scale="0.2 0.2 0.2"
+          animation__position="property: position; to: 3.2 2.8 -3.6; dur: 1500; easing: easeOutQuad; loop: true; delay: 1250"
+          animation__scale="property: scale; to: 0 0 0; dur: 4000; easing: easeInQuad; loop: true; delay: 7500"
+        >
+        </a-image>
+      </a-entity>
+
+      <!-- Lighting -->
+      <a-light type="ambient" color="#555"></a-light>
+      <a-light type="directional" intensity="0.2" position="-1 1 -3"></a-light>
+    </a-scene>
+
+    <div class="btn-container" id="btn-container">
+      <button class="pushable">
+        <span class="front">Go to Accounts!</span>
+      </button>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

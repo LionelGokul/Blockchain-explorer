@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Algorand Blockchain Explorer</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-environment-component@1.3.0/dist/aframe-environment-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity environment="preset: forest; dressingAmount: 500"></a-entity>
+      <a-plane
+        position="0 1.5 -4"
+        rotation="0 0 0"
+        width="4"
+        height="2.5"
+        color="black"
+      >
+      </a-plane>
+
+      <a-text
+        value="Account Details"
+        position="0 3 -4"
+        align="center"
+        color="red"
+        width="6"
+      >
+      </a-text>
+    </a-scene>
+
+    <script src="app.js"></script>
+  </body>
+</html>

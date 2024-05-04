@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Account Transaction Information</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <!-- Sky -->
+      <a-sky color="#87CEEB"></a-sky>
+
+      <!-- Camera and cursor -->
+      <a-camera>
+        <a-cursor color="#a85632" position="0 0 -1"></a-cursor>
+      </a-camera>
+
+      <!-- Plane and Text for displaying transaction information -->
+      <a-text
+        id="detailText"
+        value="Transaction Details"
+        position="-9 9 -8"
+        rotation="0 20 0"
+        align="center"
+        color="#000"
+        width="6"
+        visible="false"
+      ></a-text>
+      <a-plane
+        id="infoPanel"
+        position="-9 6 -8"
+        rotation="0 20 0"
+        width="8"
+        height="5"
+        color="#f4f4f4"
+        visible="false"
+      >
+        <a-text
+          id="infoText"
+          value=""
+          align="left"
+          color="#000000"
+          position="-3 0.2 0.1"
+          width="6"
+        ></a-text>
+      </a-plane>
+
+      <!-- 3D Frame -->
+      <a-box
+        id="frameTop"
+        position="-9 8.5 -8"
+        width="8.2"
+        height="0.1"
+        depth="0.1"
+        color="#000000"
+        visible="false"
+        rotation="0 20 0"
+      ></a-box>
+      <a-box
+        id="frameBottom"
+        position="-9 3.5 -8"
+        width="8.2"
+        height="0.1"
+        depth="0.1"
+        color="#000000"
+        visible="false"
+        rotation="0 20 0"
+      ></a-box>
+
+      <!-- Bold Title Text -->
+      <a-text
+        value="Account & Its Transaction Details"
+        position="0 5 -5"
+        align="center"
+        color="#000"
+        width="8"
+      ></a-text>
+
+      <!-- Bold and smaller Account Text -->
+      <a-text
+        value="Account: "
+        position="0 4 -5"
+        align="center"
+        color="#000"
+        width="6"
+      ></a-text>
+      <a-text
+        id="accountId"
+        value="SIMRWDNWV5KYHH5W36AXVMZAYKQA7ASLJJBHXPUZ6APP4ZTHB7QNP42TQ4"
+        position="0 3.5 -5"
+        align="center"
+        color="#000"
+        width="5"
+      ></a-text>
+
+      <!-- Shapes -->
+      <a-box
+        position="-2 2 -5"
+        color="#FF6347"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 8000"
+        id="boxShape"
+        cursor="rayOrigin: mouse"
+      ></a-box>
+      <a-icosahedron
+        position="0 0 -5"
+        color="#7FFF00"
+        animation="property: rotation; to: 360 0 0; loop: true; dur: 6000"
+        id="icosahedronShape"
+        cursor="rayOrigin: mouse"
+      ></a-icosahedron>
+      <a-dodecahedron
+        position="3 -1 -5"
+        color="#4682B4"
+        animation="property: rotation; to: 0 0 360; loop: true; dur: 7000"
+        id="dodecahedronShape"
+        cursor="rayOrigin: mouse"
+      ></a-dodecahedron>
+      <a-torus
+        position="-4.6 1 -5"
+        radius="1"
+        color="#FFD700"
+        animation="property: rotation; to: 360 360 360; loop: true; dur: 5000"
+        id="torusShape"
+        cursor="rayOrigin: mouse"
+      ></a-torus>
+      <a-sphere
+        position="1 2 -5"
+        radius="0.5"
+        color="#9400D3"
+        animation="property: rotation; to: 360 0 0; loop: true; dur: 4000"
+        id="sphereShape"
+        cursor="rayOrigin: mouse"
+      ></a-sphere>
+      <a-tetrahedron
+        position="5 0 -5"
+        radius="0.8"
+        color="#00CED1"
+        animation="property: rotation; to: 0 360 0; loop: true; dur: 6000"
+        id="tetrahedronShape"
+        cursor="rayOrigin: mouse"
+      ></a-tetrahedron>
+
+      <script>
+        var transactions = [];
+
+        async function fetchTransactions() {
+          try {
+            // Get the query string from the URL
+            const queryString = window.location.search;
+
+            // Create a URLSearchParams object passing the query string
+            const urlParams = new URLSearchParams(queryString);
+
+            // Get the value of the 'id' parameter
+            const id = urlParams.get("id");
+            const accountIdElem = document.getElementById("accountId");
+            accountIdElem.setAttribute("value", id);
+            const response = await fetch(
+              `https://testnet-idx.algonode.cloud/v2/transactions?address=${id}`
+            );
+            const data = await response.json();
+            transactions = data.transactions.slice(0, 7); // Keep only the latest 7 transactions
+            initializeClickEvents();
+          } catch (error) {
+            console.error("Error fetching transactions:", error);
+          }
+        }
+
+        function updateInfoPanel(index) {
+          if (index < transactions.length && transactions[index]) {
+            var transaction = transactions[index];
+            var displayText = `Txn ID: ${transaction.id}\nBlock: ${
+              transaction["confirmed-round"]
+            }\nFrom: ${transaction.sender}\nTo: ${
+              transaction["payment-transaction"].receiver
+            }\nAmount: ${(
+              transaction["payment-transaction"].amount / 1e6
+            ).toFixed(6)} ALGO\nFee: ${(transaction.fee / 1e6).toFixed(
+              6
+            )} ALGO\nType: Payment`;
+            var panel = document.querySelector("#infoPanel");
+            var textElement = document.querySelector("#infoText");
+            var detailText = document.querySelector("#detailText");
+            var frameTop = document.querySelector("#frameTop");
+            var frameBottom = document.querySelector("#frameBottom");
+            var frameLeft = document.querySelector("#frameLeft");
+            var frameRight = document.querySelector("#frameRight");
+
+            textElement.setAttribute("value", displayText);
+            panel.setAttribute("visible", true);
+            detailText.setAttribute("visible", true);
+
+            // Show the frame when info panel is visible
+            frameTop.setAttribute("visible", true);
+            frameBottom.setAttribute("visible", true);
+            frameLeft.setAttribute("visible", true);
+            frameRight.setAttribute("visible", true);
+          } else {
+            console.error(
+              "Transaction data is not available for index:",
+              index
+            );
+          }
+        }
+
+        function initializeClickEvents() {
+          document
+            .querySelector("#boxShape")
+            .addEventListener("click", () => updateInfoPanel(0));
+          document
+            .querySelector("#icosahedronShape")
+            .addEventListener("click", () => updateInfoPanel(1));
+          document
+            .querySelector("#dodecahedronShape")
+            .addEventListener("click", () => updateInfoPanel(2));
+          document
+            .querySelector("#torusShape")
+            .addEventListener("click", () => updateInfoPanel(3));
+          document
+            .querySelector("#sphereShape")
+            .addEventListener("click", () => updateInfoPanel(4));
+          document
+            .querySelector("#tetrahedronShape")
+            .addEventListener("click", () => updateInfoPanel(5));
+        }
+
+        // Fetch transactions on page load
+        window.addEventListener("load", fetchTransactions);
+      </script>
+    </a-scene>
+  </body>
+</html>
